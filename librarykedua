@@ -1,0 +1,284 @@
+-- ================================================
+-- CONTOH PENGGUNAAN UNIVERSAL X LIBRARY
+-- ================================================
+-- Load script utama terlebih dahulu, lalu gunakan Library seperti contoh di bawah
+
+-- Cara 1: Load dari file (jika sudah di loadstring)
+-- local Library = loadstring(game:HttpGet("URL_SCRIPT_ANDA"))()
+
+-- Cara 2: Jika script sudah di-execute, gunakan langsung
+local Library = getgenv().Library or _G.UniversalXLibrary
+
+-- ================================================
+-- MENAMBAHKAN TOGGLE
+-- ================================================
+
+-- Toggle di Tab Home
+Library:AddToggle("Home", "Auto Farm", false, function(state)
+    if state then
+        print("Auto Farm: ON")
+        -- Kode auto farm disini
+        _G.AutoFarm = true
+        while _G.AutoFarm do
+            wait(1)
+            -- Loop auto farm
+            print("Farming...")
+        end
+    else
+        print("Auto Farm: OFF")
+        _G.AutoFarm = false
+    end
+end)
+
+-- Toggle di Tab Player
+Library:AddToggle("Player", "God Mode", false, function(state)
+    local player = game.Players.LocalPlayer
+    if state then
+        player.Character.Humanoid.MaxHealth = math.huge
+        player.Character.Humanoid.Health = math.huge
+        print("God Mode: ON")
+    else
+        player.Character.Humanoid.MaxHealth = 100
+        player.Character.Humanoid.Health = 100
+        print("God Mode: OFF")
+    end
+end)
+
+-- Toggle di Tab Game
+Library:AddToggle("Game", "Auto Collect Coins", false, function(state)
+    if state then
+        _G.AutoCollect = true
+        spawn(function()
+            while _G.AutoCollect do
+                wait(0.1)
+                -- Kode collect coins
+                for _, coin in pairs(workspace.Coins:GetChildren()) do
+                    if coin:IsA("Part") then
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = coin.CFrame
+                        wait(0.1)
+                    end
+                end
+            end
+        end)
+    else
+        _G.AutoCollect = false
+    end
+end)
+
+-- Toggle di Tab Misc
+Library:AddToggle("Misc", "Anti AFK", false, function(state)
+    if state then
+        local VirtualUser = game:GetService("VirtualUser")
+        game:GetService("Players").LocalPlayer.Idled:Connect(function()
+            VirtualUser:CaptureController()
+            VirtualUser:ClickButton2(Vector2.new())
+        end)
+        print("Anti AFK: ON")
+    end
+end)
+
+-- ================================================
+-- MENAMBAHKAN SLIDER
+-- ================================================
+
+-- Slider di Tab Home
+Library:AddSlider("Home", "Spawn Delay", 1, 10, 5, function(value)
+    _G.SpawnDelay = value
+    print("Spawn Delay set to:", value)
+end)
+
+-- Slider di Tab Player
+Library:AddSlider("Player", "Custom WalkSpeed", 16, 500, 16, function(value)
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value
+end)
+
+Library:AddSlider("Player", "Custom JumpPower", 50, 500, 50, function(value)
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = value
+end)
+
+Library:AddSlider("Player", "Hip Height", 0, 50, 0, function(value)
+    game.Players.LocalPlayer.Character.Humanoid.HipHeight = value
+end)
+
+-- Slider di Tab Game
+Library:AddSlider("Game", "Camera FOV", 70, 120, 70, function(value)
+    workspace.CurrentCamera.FieldOfView = value
+end)
+
+Library:AddSlider("Game", "Time of Day", 0, 24, 12, function(value)
+    game:GetService("Lighting").ClockTime = value
+end)
+
+Library:AddSlider("Game", "Brightness", 0, 5, 1, function(value)
+    game:GetService("Lighting").Brightness = value
+end)
+
+-- Slider di Tab Misc
+Library:AddSlider("Misc", "Audio Volume", 0, 10, 5, function(value)
+    for _, sound in pairs(game:GetDescendants()) do
+        if sound:IsA("Sound") then
+            sound.Volume = value / 10
+        end
+    end
+end)
+
+-- ================================================
+-- MENAMBAHKAN BUTTON
+-- ================================================
+
+-- Button di Tab Home
+Library:AddButton("Home", "🏠 Teleport to Spawn", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(0, 50, 0)
+    print("Teleported to spawn!")
+end)
+
+Library:AddButton("Home", "📊 Show Stats", function()
+    local stats = game.Players.LocalPlayer:WaitForChild("leaderstats")
+    for _, stat in pairs(stats:GetChildren()) do
+        print(stat.Name .. ":", stat.Value)
+    end
+end)
+
+-- Button di Tab Player
+Library:AddButton("Player", "✨ Rainbow Character", function()
+    spawn(function()
+        while wait(0.1) do
+            for _, part in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+                if part:IsA("BasePart") then
+                    part.Color = Color3.fromHSV(tick() % 5 / 5, 1, 1)
+                end
+            end
+        end
+    end)
+end)
+
+Library:AddButton("Player", "👻 Invisible", function()
+    for _, part in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+        if part:IsA("BasePart") or part:IsA("Decal") then
+            part.Transparency = 1
+        end
+    end
+    game.Players.LocalPlayer.Character.Head.face.Transparency = 1
+end)
+
+Library:AddButton("Player", "👤 Visible", function()
+    for _, part in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+        if part:IsA("BasePart") then
+            part.Transparency = 0
+        end
+    end
+    game.Players.LocalPlayer.Character.Head.face.Transparency = 0
+end)
+
+-- Button di Tab Game
+Library:AddButton("Game", "💡 Remove Shadows", function()
+    game:GetService("Lighting").GlobalShadows = false
+    print("Shadows removed!")
+end)
+
+Library:AddButton("Game", "🌫️ Remove Fog", function()
+    game:GetService("Lighting").FogEnd = 1000000
+    print("Fog removed!")
+end)
+
+Library:AddButton("Game", "🎨 Remove Textures", function()
+    for _, obj in pairs(workspace:GetDescendants()) do
+        if obj:IsA("Decal") or obj:IsA("Texture") then
+            obj:Destroy()
+        end
+    end
+    print("Textures removed!")
+end)
+
+Library:AddButton("Game", "🔊 Mute All Sounds", function()
+    for _, sound in pairs(game:GetDescendants()) do
+        if sound:IsA("Sound") then
+            sound.Volume = 0
+        end
+    end
+    print("All sounds muted!")
+end)
+
+-- Button di Tab Misc
+Library:AddButton("Misc", "📸 Screenshot", function()
+    local camera = workspace.CurrentCamera
+    local screenshot = camera:TakeSnapshot()
+    print("Screenshot taken!")
+end)
+
+Library:AddButton("Misc", "🔄 Refresh GUI", function()
+    -- Reload GUI
+    game:GetService("CoreGui"):FindFirstChild("UniversalXGUI"):Destroy()
+    loadstring(game:HttpGet("URL_SCRIPT"))()
+end)
+
+Library:AddButton("Misc", "⚠️ Destroy GUI", function()
+    game.Players.LocalPlayer.PlayerGui:FindFirstChild("UniversalXGUI"):Destroy()
+    print("GUI Destroyed!")
+end)
+
+-- ================================================
+-- MENAMBAHKAN LABEL
+-- ================================================
+
+Library:AddLabel("Home", "━━━━━━━━━━━━━━━━━━━")
+Library:AddLabel("Home", "📌 Script by YourName")
+Library:AddLabel("Home", "⭐ Version 2.0.0")
+
+Library:AddLabel("Player", "━━━ Movement Settings ━━━")
+Library:AddLabel("Game", "━━━ Visual Settings ━━━")
+Library:AddLabel("Misc", "━━━ Extra Features ━━━")
+
+-- ================================================
+-- TIPS & TRICKS
+-- ================================================
+
+--[[
+    TIPS PENGGUNAAN:
+    
+    1. Tab yang tersedia: "Home", "Player", "Game", "Misc"
+    
+    2. AddToggle parameters:
+       - Tab name (string)
+       - Text (string)
+       - Default state (boolean)
+       - Callback function(state)
+    
+    3. AddSlider parameters:
+       - Tab name (string)
+       - Text (string)
+       - Min value (number)
+       - Max value (number)
+       - Default value (number)
+       - Callback function(value)
+    
+    4. AddButton parameters:
+       - Tab name (string)
+       - Text (string)
+       - Callback function()
+    
+    5. AddLabel parameters:
+       - Tab name (string)
+       - Text (string)
+    
+    CONTOH KOMBINASI:
+    
+    -- Auto Farm dengan Speed Control
+    local farmSpeed = 50
+    
+    Library:AddToggle("Game", "Auto Farm", false, function(state)
+        _G.Farming = state
+        while _G.Farming do
+            wait(1/farmSpeed)
+            -- Farm code here
+        end
+    end)
+    
+    Library:AddSlider("Game", "Farm Speed", 1, 100, 50, function(value)
+        farmSpeed = value
+    end)
+]]
+
+print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+print("Universal X - Custom Examples Loaded!")
+print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
