@@ -1,0 +1,571 @@
+-- Universal X GUI Script untuk Roblox (Advanced Edition)
+-- Paste script ini di Executor Roblox Anda
+-- Sistem AddToggle, AddSlider, dan AddButton untuk customisasi dari luar
+
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- Hapus GUI lama jika ada
+if LocalPlayer.PlayerGui:FindFirstChild("UniversalXGUI") then
+    LocalPlayer.PlayerGui:FindFirstChild("UniversalXGUI"):Destroy()
+end
+
+-- Library Table
+local Library = {}
+Library.Tabs = {}
+
+-- Buat ScreenGui
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "UniversalXGUI"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+ScreenGui.Parent = LocalPlayer.PlayerGui
+
+-- Main Frame
+local MainFrame = Instance.new("Frame")
+MainFrame.Name = "MainFrame"
+MainFrame.Size = UDim2.new(0, 650, 0, 450)
+MainFrame.Position = UDim2.new(0.5, -325, 0.5, -225)
+MainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
+MainFrame.BorderSizePixel = 0
+MainFrame.Active = true
+MainFrame.Draggable = true
+MainFrame.Parent = ScreenGui
+
+local MainCorner = Instance.new("UICorner")
+MainCorner.CornerRadius = UDim.new(0, 12)
+MainCorner.Parent = MainFrame
+
+-- Shadow Effect
+local Shadow = Instance.new("ImageLabel")
+Shadow.Name = "Shadow"
+Shadow.Size = UDim2.new(1, 30, 1, 30)
+Shadow.Position = UDim2.new(0, -15, 0, -15)
+Shadow.BackgroundTransparency = 1
+Shadow.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
+Shadow.ImageColor3 = Color3.fromRGB(100, 100, 255)
+Shadow.ImageTransparency = 0.7
+Shadow.ScaleType = Enum.ScaleType.Slice
+Shadow.SliceCenter = Rect.new(10, 10, 118, 118)
+Shadow.ZIndex = 0
+Shadow.Parent = MainFrame
+
+-- Header Frame
+local Header = Instance.new("Frame")
+Header.Name = "Header"
+Header.Size = UDim2.new(1, 0, 0, 50)
+Header.BackgroundColor3 = Color3.fromRGB(35, 35, 50)
+Header.BorderSizePixel = 0
+Header.Parent = MainFrame
+
+local HeaderCorner = Instance.new("UICorner")
+HeaderCorner.CornerRadius = UDim.new(0, 12)
+HeaderCorner.Parent = Header
+
+-- Logo Icon
+local LogoIcon = Instance.new("Frame")
+LogoIcon.Name = "LogoIcon"
+LogoIcon.Size = UDim2.new(0, 35, 0, 35)
+LogoIcon.Position = UDim2.new(0, 10, 0.5, -17.5)
+LogoIcon.BackgroundColor3 = Color3.fromRGB(100, 100, 255)
+LogoIcon.BorderSizePixel = 0
+LogoIcon.Parent = Header
+
+local IconCorner = Instance.new("UICorner")
+IconCorner.CornerRadius = UDim.new(0, 8)
+IconCorner.Parent = LogoIcon
+
+local IconText = Instance.new("TextLabel")
+IconText.Size = UDim2.new(1, 0, 1, 0)
+IconText.BackgroundTransparency = 1
+IconText.Text = "X"
+IconText.TextColor3 = Color3.fromRGB(255, 255, 255)
+IconText.Font = Enum.Font.GothamBold
+IconText.TextSize = 24
+IconText.Parent = LogoIcon
+
+-- Logo Text
+local LogoText = Instance.new("TextLabel")
+LogoText.Name = "LogoText"
+LogoText.Size = UDim2.new(0, 200, 1, 0)
+LogoText.Position = UDim2.new(0, 55, 0, 0)
+LogoText.BackgroundTransparency = 1
+LogoText.Text = "Universal X"
+LogoText.TextColor3 = Color3.fromRGB(255, 255, 255)
+LogoText.Font = Enum.Font.GothamBold
+LogoText.TextSize = 20
+LogoText.TextXAlignment = Enum.TextXAlignment.Left
+LogoText.Parent = Header
+
+-- Version Text
+local VersionText = Instance.new("TextLabel")
+VersionText.Size = UDim2.new(0, 100, 0, 20)
+VersionText.Position = UDim2.new(0, 55, 0, 25)
+VersionText.BackgroundTransparency = 1
+VersionText.Text = "v2.0.0 Advanced"
+VersionText.TextColor3 = Color3.fromRGB(150, 150, 170)
+VersionText.Font = Enum.Font.Gotham
+VersionText.TextSize = 11
+VersionText.TextXAlignment = Enum.TextXAlignment.Left
+VersionText.Parent = Header
+
+-- Close Button
+local CloseButton = Instance.new("TextButton")
+CloseButton.Name = "CloseButton"
+CloseButton.Size = UDim2.new(0, 35, 0, 35)
+CloseButton.Position = UDim2.new(1, -45, 0.5, -17.5)
+CloseButton.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
+CloseButton.Text = "×"
+CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+CloseButton.Font = Enum.Font.GothamBold
+CloseButton.TextSize = 24
+CloseButton.BorderSizePixel = 0
+CloseButton.Parent = Header
+
+local CloseCorner = Instance.new("UICorner")
+CloseCorner.CornerRadius = UDim.new(0, 8)
+CloseCorner.Parent = CloseButton
+
+-- Minimize Button
+local MinimizeButton = Instance.new("TextButton")
+MinimizeButton.Name = "MinimizeButton"
+MinimizeButton.Size = UDim2.new(0, 35, 0, 35)
+MinimizeButton.Position = UDim2.new(1, -85, 0.5, -17.5)
+MinimizeButton.BackgroundColor3 = Color3.fromRGB(255, 200, 50)
+MinimizeButton.Text = "−"
+MinimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+MinimizeButton.Font = Enum.Font.GothamBold
+MinimizeButton.TextSize = 24
+MinimizeButton.BorderSizePixel = 0
+MinimizeButton.Parent = Header
+
+local MinCorner = Instance.new("UICorner")
+MinCorner.CornerRadius = UDim.new(0, 8)
+MinCorner.Parent = MinimizeButton
+
+-- Content Frame
+local Content = Instance.new("Frame")
+Content.Name = "Content"
+Content.Size = UDim2.new(1, -20, 1, -70)
+Content.Position = UDim2.new(0, 10, 0, 60)
+Content.BackgroundTransparency = 1
+Content.Parent = MainFrame
+
+-- Tab Frame (Sidebar)
+local TabFrame = Instance.new("Frame")
+TabFrame.Name = "TabFrame"
+TabFrame.Size = UDim2.new(0, 130, 1, 0)
+TabFrame.BackgroundTransparency = 1
+TabFrame.Parent = Content
+
+-- Tabs Container
+local TabsContainer = Instance.new("Frame")
+TabsContainer.Name = "TabsContainer"
+TabsContainer.Size = UDim2.new(1, -140, 1, 0)
+TabsContainer.Position = UDim2.new(0, 140, 0, 0)
+TabsContainer.BackgroundColor3 = Color3.fromRGB(30, 30, 42)
+TabsContainer.BorderSizePixel = 0
+TabsContainer.Parent = Content
+
+local ContainerCorner = Instance.new("UICorner")
+ContainerCorner.CornerRadius = UDim.new(0, 10)
+ContainerCorner.Parent = TabsContainer
+
+-- Function to send notification
+local function SendNotification(title, text, duration)
+    game.StarterGui:SetCore("SendNotification", {
+        Title = title;
+        Text = text;
+        Duration = duration or 3;
+    })
+end
+
+-- Function to create Tab Button
+local function CreateTabButton(name, icon, position)
+    local TabButton = Instance.new("TextButton")
+    TabButton.Name = name .. "Tab"
+    TabButton.Size = UDim2.new(1, 0, 0, 40)
+    TabButton.Position = UDim2.new(0, 0, 0, position)
+    TabButton.BackgroundColor3 = Color3.fromRGB(45, 45, 60)
+    TabButton.Text = icon .. " " .. name
+    TabButton.TextColor3 = Color3.fromRGB(200, 200, 220)
+    TabButton.Font = Enum.Font.GothamSemibold
+    TabButton.TextSize = 13
+    TabButton.BorderSizePixel = 0
+    TabButton.Parent = TabFrame
+    
+    local TabCorner = Instance.new("UICorner")
+    TabCorner.CornerRadius = UDim.new(0, 8)
+    TabCorner.Parent = TabButton
+    
+    return TabButton
+end
+
+-- Function to create Tab Content
+local function CreateTabContent(name)
+    local TabContent = Instance.new("ScrollingFrame")
+    TabContent.Name = name .. "Content"
+    TabContent.Size = UDim2.new(1, -20, 1, -20)
+    TabContent.Position = UDim2.new(0, 10, 0, 10)
+    TabContent.BackgroundTransparency = 1
+    TabContent.ScrollBarThickness = 5
+    TabContent.BorderSizePixel = 0
+    TabContent.Visible = false
+    TabContent.CanvasSize = UDim2.new(0, 0, 0, 0)
+    TabContent.Parent = TabsContainer
+    
+    local Layout = Instance.new("UIListLayout")
+    Layout.Padding = UDim.new(0, 8)
+    Layout.SortOrder = Enum.SortOrder.LayoutOrder
+    Layout.Parent = TabContent
+    
+    -- Auto-resize canvas
+    Layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+        TabContent.CanvasSize = UDim2.new(0, 0, 0, Layout.AbsoluteContentSize.Y + 10)
+    end)
+    
+    return TabContent
+end
+
+-- Create Tabs
+local HomeTabBtn = CreateTabButton("Home", "🏠", 0)
+local PlayerTabBtn = CreateTabButton("Player", "👤", 50)
+local GameTabBtn = CreateTabButton("Game", "🎮", 100)
+local MiscTabBtn = CreateTabButton("Misc", "⚙️", 150)
+
+-- Create Tab Contents
+local HomeContent = CreateTabContent("Home")
+local PlayerContent = CreateTabContent("Player")
+local GameContent = CreateTabContent("Game")
+local MiscContent = CreateTabContent("Misc")
+
+-- Store tabs in library
+Library.Tabs.Home = {Content = HomeContent, Button = HomeTabBtn}
+Library.Tabs.Player = {Content = PlayerContent, Button = PlayerTabBtn}
+Library.Tabs.Game = {Content = GameContent, Button = GameTabBtn}
+Library.Tabs.Misc = {Content = MiscContent, Button = MiscTabBtn}
+
+-- Current active tab
+local currentTab = HomeContent
+
+-- Function to switch tabs
+local function SwitchTab(tab, button)
+    currentTab.Visible = false
+    tab.Visible = true
+    currentTab = tab
+    
+    for _, child in pairs(TabFrame:GetChildren()) do
+        if child:IsA("TextButton") then
+            child.BackgroundColor3 = Color3.fromRGB(45, 45, 60)
+        end
+    end
+    
+    button.BackgroundColor3 = Color3.fromRGB(100, 100, 255)
+end
+
+-- Tab button connections
+HomeTabBtn.MouseButton1Click:Connect(function() SwitchTab(HomeContent, HomeTabBtn) end)
+PlayerTabBtn.MouseButton1Click:Connect(function() SwitchTab(PlayerContent, PlayerTabBtn) end)
+GameTabBtn.MouseButton1Click:Connect(function() SwitchTab(GameContent, GameTabBtn) end)
+MiscTabBtn.MouseButton1Click:Connect(function() SwitchTab(MiscContent, MiscTabBtn) end)
+
+-- ============================================
+-- LIBRARY FUNCTIONS: AddButton, AddToggle, AddSlider
+-- ============================================
+
+-- Add Button Function
+function Library:AddButton(tab, text, callback)
+    local tabData = self.Tabs[tab]
+    if not tabData then warn("Tab '" .. tab .. "' tidak ditemukan!") return end
+    
+    local Button = Instance.new("TextButton")
+    Button.Size = UDim2.new(1, 0, 0, 35)
+    Button.BackgroundColor3 = Color3.fromRGB(100, 100, 255)
+    Button.Text = text
+    Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Button.Font = Enum.Font.GothamSemibold
+    Button.TextSize = 13
+    Button.BorderSizePixel = 0
+    Button.Parent = tabData.Content
+    
+    local BtnCorner = Instance.new("UICorner")
+    BtnCorner.CornerRadius = UDim.new(0, 8)
+    BtnCorner.Parent = Button
+    
+    Button.MouseButton1Click:Connect(function()
+        pcall(callback)
+    end)
+    
+    Button.MouseEnter:Connect(function()
+        TweenService:Create(Button, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(120, 120, 255)}):Play()
+    end)
+    
+    Button.MouseLeave:Connect(function()
+        TweenService:Create(Button, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(100, 100, 255)}):Play()
+    end)
+    
+    return Button
+end
+
+-- Add Toggle Function
+function Library:AddToggle(tab, text, default, callback)
+    local tabData = self.Tabs[tab]
+    if not tabData then warn("Tab '" .. tab .. "' tidak ditemukan!") return end
+    
+    local toggled = default or false
+    
+    -- Toggle Container
+    local ToggleFrame = Instance.new("Frame")
+    ToggleFrame.Size = UDim2.new(1, 0, 0, 40)
+    ToggleFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 55)
+    ToggleFrame.BorderSizePixel = 0
+    ToggleFrame.Parent = tabData.Content
+    
+    local ToggleCorner = Instance.new("UICorner")
+    ToggleCorner.CornerRadius = UDim.new(0, 8)
+    ToggleCorner.Parent = ToggleFrame
+    
+    -- Toggle Label
+    local ToggleLabel = Instance.new("TextLabel")
+    ToggleLabel.Size = UDim2.new(1, -60, 1, 0)
+    ToggleLabel.Position = UDim2.new(0, 10, 0, 0)
+    ToggleLabel.BackgroundTransparency = 1
+    ToggleLabel.Text = text
+    ToggleLabel.TextColor3 = Color3.fromRGB(220, 220, 240)
+    ToggleLabel.Font = Enum.Font.GothamSemibold
+    ToggleLabel.TextSize = 13
+    ToggleLabel.TextXAlignment = Enum.TextXAlignment.Left
+    ToggleLabel.Parent = ToggleFrame
+    
+    -- Toggle Switch Background
+    local ToggleBG = Instance.new("Frame")
+    ToggleBG.Size = UDim2.new(0, 45, 0, 24)
+    ToggleBG.Position = UDim2.new(1, -52, 0.5, -12)
+    ToggleBG.BackgroundColor3 = toggled and Color3.fromRGB(100, 200, 100) or Color3.fromRGB(60, 60, 75)
+    ToggleBG.BorderSizePixel = 0
+    ToggleBG.Parent = ToggleFrame
+    
+    local ToggleBGCorner = Instance.new("UICorner")
+    ToggleBGCorner.CornerRadius = UDim.new(1, 0)
+    ToggleBGCorner.Parent = ToggleBG
+    
+    -- Toggle Circle
+    local ToggleCircle = Instance.new("Frame")
+    ToggleCircle.Size = UDim2.new(0, 18, 0, 18)
+    ToggleCircle.Position = toggled and UDim2.new(1, -21, 0.5, -9) or UDim2.new(0, 3, 0.5, -9)
+    ToggleCircle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ToggleCircle.BorderSizePixel = 0
+    ToggleCircle.Parent = ToggleBG
+    
+    local CircleCorner = Instance.new("UICorner")
+    CircleCorner.CornerRadius = UDim.new(1, 0)
+    CircleCorner.Parent = ToggleCircle
+    
+    -- Toggle Button
+    local ToggleButton = Instance.new("TextButton")
+    ToggleButton.Size = UDim2.new(1, 0, 1, 0)
+    ToggleButton.BackgroundTransparency = 1
+    ToggleButton.Text = ""
+    ToggleButton.Parent = ToggleFrame
+    
+    ToggleButton.MouseButton1Click:Connect(function()
+        toggled = not toggled
+        
+        TweenService:Create(ToggleBG, TweenInfo.new(0.3), {
+            BackgroundColor3 = toggled and Color3.fromRGB(100, 200, 100) or Color3.fromRGB(60, 60, 75)
+        }):Play()
+        
+        TweenService:Create(ToggleCircle, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {
+            Position = toggled and UDim2.new(1, -21, 0.5, -9) or UDim2.new(0, 3, 0.5, -9)
+        }):Play()
+        
+        pcall(callback, toggled)
+    end)
+    
+    return {
+        Toggle = ToggleFrame,
+        SetState = function(state)
+            toggled = state
+            ToggleBG.BackgroundColor3 = toggled and Color3.fromRGB(100, 200, 100) or Color3.fromRGB(60, 60, 75)
+            ToggleCircle.Position = toggled and UDim2.new(1, -21, 0.5, -9) or UDim2.new(0, 3, 0.5, -9)
+        end
+    }
+end
+
+-- Add Slider Function
+function Library:AddSlider(tab, text, min, max, default, callback)
+    local tabData = self.Tabs[tab]
+    if not tabData then warn("Tab '" .. tab .. "' tidak ditemukan!") return end
+    
+    local value = default or min
+    
+    -- Slider Container
+    local SliderFrame = Instance.new("Frame")
+    SliderFrame.Size = UDim2.new(1, 0, 0, 50)
+    SliderFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 55)
+    SliderFrame.BorderSizePixel = 0
+    SliderFrame.Parent = tabData.Content
+    
+    local SliderCorner = Instance.new("UICorner")
+    SliderCorner.CornerRadius = UDim.new(0, 8)
+    SliderCorner.Parent = SliderFrame
+    
+    -- Slider Label
+    local SliderLabel = Instance.new("TextLabel")
+    SliderLabel.Size = UDim2.new(1, -20, 0, 20)
+    SliderLabel.Position = UDim2.new(0, 10, 0, 5)
+    SliderLabel.BackgroundTransparency = 1
+    SliderLabel.Text = text .. ": " .. tostring(value)
+    SliderLabel.TextColor3 = Color3.fromRGB(220, 220, 240)
+    SliderLabel.Font = Enum.Font.GothamSemibold
+    SliderLabel.TextSize = 13
+    SliderLabel.TextXAlignment = Enum.TextXAlignment.Left
+    SliderLabel.Parent = SliderFrame
+    
+    -- Slider Track
+    local SliderTrack = Instance.new("Frame")
+    SliderTrack.Size = UDim2.new(1, -20, 0, 6)
+    SliderTrack.Position = UDim2.new(0, 10, 1, -15)
+    SliderTrack.BackgroundColor3 = Color3.fromRGB(60, 60, 75)
+    SliderTrack.BorderSizePixel = 0
+    SliderTrack.Parent = SliderFrame
+    
+    local TrackCorner = Instance.new("UICorner")
+    TrackCorner.CornerRadius = UDim.new(1, 0)
+    TrackCorner.Parent = SliderTrack
+    
+    -- Slider Fill
+    local SliderFill = Instance.new("Frame")
+    SliderFill.Size = UDim2.new((value - min) / (max - min), 0, 1, 0)
+    SliderFill.BackgroundColor3 = Color3.fromRGB(100, 100, 255)
+    SliderFill.BorderSizePixel = 0
+    SliderFill.Parent = SliderTrack
+    
+    local FillCorner = Instance.new("UICorner")
+    FillCorner.CornerRadius = UDim.new(1, 0)
+    FillCorner.Parent = SliderFill
+    
+    -- Slider Knob
+    local SliderKnob = Instance.new("Frame")
+    SliderKnob.Size = UDim2.new(0, 16, 0, 16)
+    SliderKnob.Position = UDim2.new((value - min) / (max - min), -8, 0.5, -8)
+    SliderKnob.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    SliderKnob.BorderSizePixel = 0
+    SliderKnob.Parent = SliderTrack
+    
+    local KnobCorner = Instance.new("UICorner")
+    KnobCorner.CornerRadius = UDim.new(1, 0)
+    KnobCorner.Parent = SliderKnob
+    
+    -- Slider Logic
+    local dragging = false
+    
+    SliderKnob.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = true
+        end
+    end)
+    
+    UserInputService.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = false
+        end
+    end)
+    
+    UserInputService.InputChanged:Connect(function(input)
+        if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+            local pos = math.clamp((input.Position.X - SliderTrack.AbsolutePosition.X) / SliderTrack.AbsoluteSize.X, 0, 1)
+            value = math.floor(min + (max - min) * pos)
+            
+            SliderFill.Size = UDim2.new(pos, 0, 1, 0)
+            SliderKnob.Position = UDim2.new(pos, -8, 0.5, -8)
+            SliderLabel.Text = text .. ": " .. tostring(value)
+            
+            pcall(callback, value)
+        end
+    end)
+    
+    SliderTrack.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            local pos = math.clamp((input.Position.X - SliderTrack.AbsolutePosition.X) / SliderTrack.AbsoluteSize.X, 0, 1)
+            value = math.floor(min + (max - min) * pos)
+            
+            SliderFill.Size = UDim2.new(pos, 0, 1, 0)
+            SliderKnob.Position = UDim2.new(pos, -8, 0.5, -8)
+            SliderLabel.Text = text .. ": " .. tostring(value)
+            
+            pcall(callback, value)
+        end
+    end)
+    
+    return {
+        Slider = SliderFrame,
+        SetValue = function(val)
+            value = math.clamp(val, min, max)
+            local pos = (value - min) / (max - min)
+            SliderFill.Size = UDim2.new(pos, 0, 1, 0)
+            SliderKnob.Position = UDim2.new(pos, -8, 0.5, -8)
+            SliderLabel.Text = text .. ": " .. tostring(value)
+        end
+    }
+end
+
+-- Add Label Function
+function Library:AddLabel(tab, text)
+    local tabData = self.Tabs[tab]
+    if not tabData then warn("Tab '" .. tab .. "' tidak ditemukan!") return end
+    
+    local Label = Instance.new("TextLabel")
+    Label.Size = UDim2.new(1, 0, 0, 30)
+    Label.BackgroundColor3 = Color3.fromRGB(50, 50, 70)
+    Label.Text = text
+    Label.TextColor3 = Color3.fromRGB(200, 200, 220)
+    Label.Font = Enum.Font.Gotham
+    Label.TextSize = 13
+    Label.BorderSizePixel = 0
+    Label.Parent = tabData.Content
+    
+    local LabelCorner = Instance.new("UICorner")
+    LabelCorner.CornerRadius = UDim.new(0, 8)
+    LabelCorner.Parent = Label
+    
+    return Label
+end
+
+-- ============================================
+-- DEFAULT CONTENT
+-- ============================================
+
+-- Home Tab
+Library:AddLabel("Home", "🎉 Welcome to Universal X!")
+Library:AddLabel("Home", "👤 Player: " .. LocalPlayer.Name)
+Library:AddLabel("Home", "🎮 Game: " .. game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name)
+Library:AddLabel("Home", "⚡ Version: 2.0.0 Advanced")
+
+-- Player Tab Examples
+Library:AddToggle("Player", "Speed Boost", false, function(state)
+    if state then
+        LocalPlayer.Character.Humanoid.WalkSpeed = 100
+        SendNotification("Universal X", "Speed Boost: ON (100)", 2)
+    else
+        LocalPlayer.Character.Humanoid.WalkSpeed = 16
+        SendNotification("Universal X", "Speed Boost: OFF", 2)
+    end
+end)
+
+Library:AddSlider("Player", "WalkSpeed", 16, 200, 16, function(value)
+    LocalPlayer.Character.Humanoid.WalkSpeed = value
+end)
+
+Library:AddSlider("Player", "JumpPower", 50, 300, 50, function(value)
+    LocalPlayer.Character.Humanoid.JumpPower = value
+end)
+
+Library:AddToggle("Player", "Infinite Jump", false, function(state)
+    if state then
+        _G.InfJump = true
+        game:GetService("UserInputService").JumpRequest:Connect(function()
+            if _G.InfJump then
+                LocalPlayer.Character.Humanoid:ChangeState(Enum.Hum
