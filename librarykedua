@@ -209,7 +209,7 @@ end)
 Library:AddButton("Misc", "🔄 Refresh GUI", function()
     -- Reload GUI
     game:GetService("CoreGui"):FindFirstChild("UniversalXGUI"):Destroy()
-    loadstring(game:HttpGet("URL_SCRIPT"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/bananaGanteng/robloxui/refs/heads/main/librarypertama"))()
 end)
 
 Library:AddButton("Misc", "⚠️ Destroy GUI", function()
