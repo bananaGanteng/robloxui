@@ -1,0 +1,417 @@
+-- ╔════════════════════════════════════════════════════════════╗
+-- ║           UNIVERSAL X - QUICK REFERENCE GUIDE              ║
+-- ║                      Version 2.0.0                         ║
+-- ╚════════════════════════════════════════════════════════════╝
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+--                    📦 LOAD SCRIPT
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+-- Execute script (akan otomatis return Library)
+local Library = loadstring(game:HttpGet("YOUR_SCRIPT_URL"))()
+
+-- Atau jika sudah di-load
+local Library = getgenv().Library
+
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+--                    🎯 AVAILABLE TABS
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+--[[ 
+    Tabs yang tersedia:
+    • "Home"   🏠
+    • "Player" 👤
+    • "Game"   🎮
+    • "Misc"   ⚙️
+]]
+
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+--                    🔘 ADD BUTTON
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Library:AddButton(
+    "Tab",              -- Tab name: "Home", "Player", "Game", "Misc"
+    "Button Text",      -- Text displayed on button
+    function()          -- Function to execute when clicked
+        print("Clicked!")
+    end
+)
+
+-- Example:
+Library:AddButton("Home", "🏠 Teleport Spawn", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(0, 50, 0)
+end)
+
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+--                    🔀 ADD TOGGLE
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Library:AddToggle(
+    "Tab",              -- Tab name
+    "Toggle Text",      -- Text displayed
+    false,              -- Default state (true/false)
+    function(state)     -- Function with state parameter
+        if state then
+            print("ON")
+        else
+            print("OFF")
+        end
+    end
+)
+
+-- Example 1: Simple toggle
+Library:AddToggle("Player", "Speed Boost", false, function(state)
+    if state then
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 100
+    else
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+    end
+end)
+
+-- Example 2: Toggle with loop
+Library:AddToggle("Game", "Auto Farm", false, function(state)
+    _G.AutoFarm = state
+    while _G.AutoFarm do
+        wait(1)
+        -- Your farming code here
+    end
+end)
+
+-- Example 3: Control toggle from code
+local toggle = Library:AddToggle("Player", "Test", false, function(state) end)
+toggle.SetState(true)  -- Turn ON programmatically
+
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+--                    📊 ADD SLIDER
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Library:AddSlider(
+    "Tab",              -- Tab name
+    "Slider Text",      -- Text displayed
+    0,                  -- Minimum value
+    100,                -- Maximum value
+    50,                 -- Default value
+    function(value)     -- Function with value parameter
+        print("Value:", value)
+    end
+)
+
+-- Example 1: WalkSpeed
+Library:AddSlider("Player", "WalkSpeed", 16, 500, 16, function(value)
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value
+end)
+
+-- Example 2: FOV
+Library:AddSlider("Game", "Camera FOV", 70, 120, 70, function(value)
+    workspace.CurrentCamera.FieldOfView = value
+end)
+
+-- Example 3: Control slider from code
+local slider = Library:AddSlider("Player", "Speed", 0, 100, 50, function(value) end)
+slider.SetValue(75)  -- Set to 75 programmatically
+
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+--                    📝 ADD LABEL
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Library:AddLabel(
+    "Tab",              -- Tab name
+    "Label Text"        -- Text to display (not clickable)
+)
+
+-- Example 1: Header
+Library:AddLabel("Home", "━━━━━━━━━━━━━━━━━━━")
+Library:AddLabel("Home", "🎉 Welcome!")
+Library:AddLabel("Home", "━━━━━━━━━━━━━━━━━━━")
+
+-- Example 2: Section separator
+Library:AddLabel("Player", "━━━ Speed Settings ━━━")
+
+-- Example 3: Update label dynamically
+local label = Library:AddLabel("Misc", "Status: Idle")
+label.Text = "Status: Running"  -- Update text later
+
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+--              🎨 COMMON PATTERNS & COMBINATIONS
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+-- ╔═══════════════════════════════════════════════╗
+-- ║  Pattern 1: Toggle + Slider Combo            ║
+-- ╚═══════════════════════════════════════════════╝
+
+_G.SpeedBoost = false
+_G.BoostAmount = 100
+
+Library:AddToggle("Player", "Speed Boost", false, function(state)
+    _G.SpeedBoost = state
+    if state then
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = _G.BoostAmount
+    else
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+    end
+end)
+
+Library:AddSlider("Player", "Boost Amount", 50, 500, 100, function(value)
+    _G.BoostAmount = value
+    if _G.SpeedBoost then  -- Update immediately if boost is ON
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value
+    end
+end)
+
+
+-- ╔═══════════════════════════════════════════════╗
+-- ║  Pattern 2: Auto Farm System                 ║
+-- ╚═══════════════════════════════════════════════╝
+
+_G.AutoFarm = false
+_G.FarmSpeed = 50
+
+Library:AddLabel("Game", "━━━ Auto Farm Settings ━━━")
+
+Library:AddToggle("Game", "Enable Auto Farm", false, function(state)
+    _G.AutoFarm = state
+    
+    spawn(function()
+        while _G.AutoFarm do
+            wait(1 / _G.FarmSpeed)
+            
+            -- Your farm logic here
+            for _, item in pairs(workspace.Items:GetChildren()) do
+                if _G.AutoFarm then
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = item.CFrame
+                    wait(0.1)
+                end
+            end
+        end
+    end)
+end)
+
+Library:AddSlider("Game", "Farm Speed", 1, 100, 50, function(value)
+    _G.FarmSpeed = value
+end)
+
+Library:AddButton("Game", "Teleport to Farm Area", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(100, 50, 100)
+end)
+
+
+-- ╔═══════════════════════════════════════════════╗
+-- ║  Pattern 3: Visual Settings Section          ║
+-- ╚═══════════════════════════════════════════════╝
+
+Library:AddLabel("Game", "━━━ Visual Settings ━━━")
+
+Library:AddToggle("Game", "Full Bright", false, function(state)
+    local Lighting = game:GetService("Lighting")
+    if state then
+        Lighting.Brightness = 2
+        Lighting.ClockTime = 14
+        Lighting.FogEnd = 100000
+    else
+        Lighting.Brightness = 1
+    end
+end)
+
+Library:AddSlider("Game", "Field of View", 70, 120, 70, function(value)
+    workspace.CurrentCamera.FieldOfView = value
+end)
+
+Library:AddSlider("Game", "Time of Day", 0, 24, 12, function(value)
+    game:GetService("Lighting").ClockTime = value
+end)
+
+
+-- ╔═══════════════════════════════════════════════╗
+-- ║  Pattern 4: Character Modifications          ║
+-- ╚═══════════════════════════════════════════════╝
+
+Library:AddLabel("Player", "━━━ Character Mods ━━━")
+
+Library:AddToggle("Player", "God Mode", false, function(state)
+    local char = game.Players.LocalPlayer.Character
+    if state then
+        char.Humanoid.MaxHealth = math.huge
+        char.Humanoid.Health = math.huge
+    else
+        char.Humanoid.MaxHealth = 100
+        char.Humanoid.Health = 100
+    end
+end)
+
+Library:AddToggle("Player", "Infinite Jump", false, function(state)
+    _G.InfJump = state
+    if state then
+        game:GetService("UserInputService").JumpRequest:Connect(function()
+            if _G.InfJump then
+                game.Players.LocalPlayer.Character.Humanoid:ChangeState("Jumping")
+            end
+        end)
+    end
+end)
+
+Library:AddSlider("Player", "Hip Height", 0, 50, 0, function(value)
+    game.Players.LocalPlayer.Character.Humanoid.HipHeight = value
+end)
+
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+--                    🛠️ UTILITY FUNCTIONS
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+-- Notification Helper
+local function Notify(title, text, duration)
+    game.StarterGui:SetCore("SendNotification", {
+        Title = title or "Universal X";
+        Text = text;
+        Duration = duration or 3;
+    })
+end
+
+-- Usage in buttons/toggles:
+Library:AddButton("Home", "Test Notification", function()
+    Notify("Test", "This is a test notification!", 5)
+end)
+
+
+-- Safe Teleport Function
+local function SafeTeleport(position)
+    pcall(function()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = position
+    end)
+end
+
+Library:AddButton("Misc", "Safe TP to Spawn", function()
+    SafeTeleport(CFrame.new(0, 50, 0))
+end)
+
+
+-- Get Player Function
+local function GetPlayer()
+    return game.Players.LocalPlayer
+end
+
+local function GetCharacter()
+    return GetPlayer().Character or GetPlayer().CharacterAdded:Wait()
+end
+
+local function GetHumanoid()
+    return GetCharacter():WaitForChild("Humanoid")
+end
+
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+--                    ⚠️ COMMON MISTAKES
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+--[[ 
+❌ WRONG - Tab name typo
+Library:AddButton("home", "Test", function() end)  -- lowercase 'home'
+
+✅ CORRECT - Use exact tab names
+Library:AddButton("Home", "Test", function() end)  -- Capital 'H'
+
+
+❌ WRONG - Missing callback function
+Library:AddToggle("Player", "Speed Boost", false)
+
+✅ CORRECT - Always include callback
+Library:AddToggle("Player", "Speed Boost", false, function(state) end)
+
+
+❌ WRONG - Slider min/max reversed
+Library:AddSlider("Player", "Speed", 100, 16, 50, function(value) end)
+
+✅ CORRECT - Min should be less than Max
+Library:AddSlider("Player", "Speed", 16, 100, 50, function(value) end)
+
+
+❌ WRONG - Forgetting to use _G for global access
+local AutoFarm = false  -- Only accessible in this scope
+Library:AddToggle("Game", "Farm", false, function(state)
+    AutoFarm = state
+end)
+
+✅ CORRECT - Use _G for global variables
+_G.AutoFarm = false  -- Accessible everywhere
+Library:AddToggle("Game", "Farm", false, function(state)
+    _G.AutoFarm = state
+end)
+]]
+
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+--                    🎯 COMPLETE EXAMPLE
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+-- Initialize
+local Library = loadstring(game:HttpGet("YOUR_URL"))()
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- Global Settings
+_G.Settings = {
+    Speed = 16,
+    SpeedBoost = false,
+    AutoFarm = false,
+    FarmSpeed = 50
+}
+
+-- HOME TAB
+Library:AddLabel("Home", "━━━━━━━━━━━━━━━━━━━")
+Library:AddLabel("Home", "🎉 Universal X v2.0")
+Library:AddLabel("Home", "━━━━━━━━━━━━━━━━━━━")
+Library:AddLabel("Home", "Player: " .. LocalPlayer.Name)
+
+-- PLAYER TAB
+Library:AddLabel("Player", "━━━ Movement ━━━")
+
+Library:AddToggle("Player", "Speed Boost", false, function(state)
+    _G.Settings.SpeedBoost = state
+    LocalPlayer.Character.Humanoid.WalkSpeed = state and _G.Settings.Speed or 16
+end)
+
+Library:AddSlider("Player", "WalkSpeed", 16, 500, 16, function(value)
+    _G.Settings.Speed = value
+    if _G.Settings.SpeedBoost then
+        LocalPlayer.Character.Humanoid.WalkSpeed = value
+    end
+end)
+
+Library:AddButton("Player", "Reset Character", function()
+    LocalPlayer.Character.Humanoid.Health = 0
+end)
+
+-- GAME TAB
+Library:AddLabel("Game", "━━━ Auto Farm ━━━")
+
+Library:AddToggle("Game", "Enable Auto Farm", false, function(state)
+    _G.Settings.AutoFarm = state
+    spawn(function()
+        while _G.Settings.AutoFarm do
+            wait(1 / _G.Settings.FarmSpeed)
+            -- Farm code here
+        end
+    end)
+end)
+
+Library:AddSlider("Game", "Farm Speed", 1, 100, 50, function(value)
+    _G.Settings.FarmSpeed = value
+end)
+
+-- MISC TAB
+Library:AddButton("Misc", "🔄 Rejoin Server", function()
+    game:GetService("TeleportService"):TeleportToPlaceInstance(
+        game.PlaceId, 
+        game.JobId, 
+        LocalPlayer
+    )
+end)
+
+print("Universal X Quick Reference Loaded!")
+print("Use Library:AddButton/Toggle/Slider/Label to customize!")
